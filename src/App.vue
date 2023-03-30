@@ -1,13 +1,17 @@
 <template>
   <div class="container">
     <the-header></the-header>
-    <img :src="enlargedImgUrl" alt="" class="gallery__enlarged">
     <div v-if="images.length" class="gallery">
-      <button class="gallery__button" @click="decrementPage">Prev
-      </button>
-      <image-carousel :imagesList="images" @get-url="setImageUrl"></image-carousel>
-      <button class="gallery__button" @click="incrementPage">Next
-      </button>
+      <div class="gallery__enlarged--box">
+        <img :src="enlargedImgUrl" alt="" class="gallery__enlarged">
+      </div>
+      <div class="gallery__box">
+        <button class="gallery__button" @click="decrementPage">Prev
+        </button>
+        <image-carousel :imagesList="images" @get-url="setImageUrl"></image-carousel>
+        <button class="gallery__button" @click="incrementPage">Next
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -77,11 +81,17 @@ ul {
 }
 
 .gallery {
+  min-height: 900px;
+
+}
+
+
+
+.gallery__box {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  min-height: 180px;
 }
 
 .gallery__button {
@@ -95,8 +105,16 @@ ul {
   font-weight: 500;
 }
 
+.gallery__enlarged--box {
+  width: 800px;
+  min-height: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .gallery__enlarged {
-  width: 400px;
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 #app {
