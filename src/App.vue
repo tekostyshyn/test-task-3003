@@ -76,6 +76,12 @@ ul {
 .gallery__button {
   min-height: 20px;
   width: 60px;
+  border: none;
+  background-color: transparent;
+  color: black;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 #app {

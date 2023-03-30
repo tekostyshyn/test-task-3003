@@ -11,7 +11,7 @@ export default {
     name: 'ImageCarousel',
     props: {
         imagesList: Array,
-    }
+    },
 }
 </script>
 
