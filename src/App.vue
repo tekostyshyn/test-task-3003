@@ -1,10 +1,11 @@
 <template>
   <div class="container">
     <the-header></the-header>
+    <img :src="enlargedImgUrl" alt="" class="gallery__enlarged">
     <div v-if="images.length" class="gallery">
       <button class="gallery__button" @click="decrementPage">Prev
       </button>
-      <image-carousel :imagesList="images"></image-carousel>
+      <image-carousel :imagesList="images" @get-url="setImageUrl"></image-carousel>
       <button class="gallery__button" @click="incrementPage">Next
       </button>
     </div>
@@ -27,6 +28,7 @@ export default {
       imagesPerPage: 4,
       images: [],
       areButtonsShowed: true,
+      enlargedImgUrl: '',
     }
   },
   methods: {
@@ -42,6 +44,9 @@ export default {
       fetch(`https://picsum.photos/v2/list?page=${this.page}&limit=4`).then(res => res.json())
         .then(data => this.images = data)
         .catch(error => console.log(error));
+    },
+    setImageUrl(url) {
+      this.enlargedImgUrl = url;
     }
   },
   mounted() {
@@ -82,6 +87,10 @@ ul {
   cursor: pointer;
   font-size: 18px;
   font-weight: 500;
+}
+
+.gallery__enlarged {
+  width: 400px;
 }
 
 #app {
