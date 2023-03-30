@@ -34,15 +34,21 @@ export default {
   methods: {
     incrementPage() {
       this.page++;
-      this.fetchImages();
+      this.fetchImages(false);
     },
     decrementPage() {
       this.page--;
-      this.fetchImages();
+      this.fetchImages(false);
     },
-    fetchImages() {
+    fetchImages(isFirstRender) {
       fetch(`https://picsum.photos/v2/list?page=${this.page}&limit=4`).then(res => res.json())
-        .then(data => this.images = data)
+        .then(data => {
+          this.images = data;
+          if (isFirstRender) {
+            this.enlargedImgUrl = this.images[0]['download_url'];
+          }
+        }
+        )
         .catch(error => console.log(error));
     },
     setImageUrl(url) {
@@ -50,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchImages();
+    this.fetchImages(true);
   }
 }
 </script>
