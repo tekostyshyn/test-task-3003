@@ -1,5 +1,5 @@
 <template>
-    <div class="gallery__urlslist">
+    <div class="gallery__urlslist" v-if="selectedImages.length > 0">
     <h2>List of selected image urls:</h2>
     <ul>
         <li v-for="image of selectedImages" :key="image.id">

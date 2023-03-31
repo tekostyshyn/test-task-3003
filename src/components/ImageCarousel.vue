@@ -1,7 +1,9 @@
 <template>
     <ul class="gallery__list">
-        <li v-for="image in imagesList" :key="image.id" class="gallery__item" @click="selectImage(image.download_url, image.id)">
-            <img class="gallery__image" :src="image.download_url" alt="">
+        <li v-for="image in imagesList" :key="image.id" class="gallery__item" 
+        :class="{ 'gallery__item--choosen': checkIfSelected(image) }"
+        @click="selectImage(image.download_url, image.id)">
+          <img class="gallery__image" :src="image.download_url" alt="">
         </li>
     </ul>
     <div>
@@ -32,6 +34,10 @@ export default {
                 this.selectedImages.push({id: id, url: url})
             );
             this.$emit('selectImage', this.selectedImages)
+        },
+        checkIfSelected(image) {
+            let index =  this.selectedImages.findIndex(el => el.id === image.id);
+            return index >= 0 ? true : false;
         }
     }
 }
@@ -52,6 +58,10 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.gallery__item--choosen {
+    border: 4px solid orange;
 }
 
 .gallery__image {
