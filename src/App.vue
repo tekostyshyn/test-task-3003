@@ -6,12 +6,13 @@
         <img :src="enlargedImgUrl" alt="" class="gallery__enlarged">
       </div>
       <div class="gallery__box">
-        <button class="gallery__button" @click="decrementPage">Prev
+        <button class="gallery__button" :class="{ 'gallery__button--disabled': isFirstPage }" @click="decrementPage">Prev
         </button>
-        <image-carousel :imagesList="images" @get-url="setImageUrl"></image-carousel>
+        <image-carousel :imagesList="images" @get-url="setImageUrl" @select-image="setSelectedImages"></image-carousel>
         <button class="gallery__button" @click="incrementPage">Next
         </button>
       </div>
+      <image-list :selectedImages="selectedImages"></image-list>
     </div>
   </div>
 </template>
@@ -19,12 +20,14 @@
 <script>
 import TheHeader from './components/TheHeader.vue';
 import ImageCarousel from './components/ImageCarousel.vue';
+import ImageList from './components/ImageList.vue';
 
 export default {
   name: 'App',
   components: {
     TheHeader,
-    ImageCarousel
+    ImageCarousel,
+    ImageList
   },
   data() {
     return {
@@ -33,16 +36,20 @@ export default {
       images: [],
       areButtonsShowed: true,
       enlargedImgUrl: '',
+      isFirstPage: true,
+      selectedImages: [],
     }
   },
   methods: {
     incrementPage() {
       this.page++;
       this.fetchImages(false);
+      this.setPage();
     },
     decrementPage() {
       this.page--;
       this.fetchImages(false);
+      this.setPage();
     },
     fetchImages(isFirstRender) {
       fetch(`https://picsum.photos/v2/list?page=${this.page}&limit=4`).then(res => res.json())
@@ -57,6 +64,16 @@ export default {
     },
     setImageUrl(url) {
       this.enlargedImgUrl = url;
+    },
+    setSelectedImages(images) {
+      this.selectedImages = images;
+    },
+    setPage() {
+      if (this.page > 1) {
+        this.isFirstPage = false;
+      } else {
+        this.isFirstPage = true;
+      }
     }
   },
   mounted() {
@@ -82,16 +99,13 @@ ul {
 
 .gallery {
   min-height: 900px;
-
 }
-
-
 
 .gallery__box {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
 }
 
 .gallery__button {
@@ -101,8 +115,13 @@ ul {
   background-color: transparent;
   color: black;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 500;
+}
+
+.gallery__button--disabled {
+  color: lightgray;
+  pointer-events: none;
 }
 
 .gallery__enlarged--box {
@@ -115,6 +134,10 @@ ul {
 .gallery__enlarged {
   width: 100%;
   margin-bottom: 30px;
+}
+
+.gallery__urlslist {
+  margin-top: 30px;
 }
 
 #app {

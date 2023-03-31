@@ -1,21 +1,37 @@
 <template>
     <ul class="gallery__list">
-        <li v-for="image in imagesList" :key="image.id" class="gallery__item" @click="setImageUrl(image.download_url)">
+        <li v-for="image in imagesList" :key="image.id" class="gallery__item" @click="selectImage(image.download_url, image.id)">
             <img class="gallery__image" :src="image.download_url" alt="">
         </li>
     </ul>
+    <div>
+    </div>
 </template>
 
 <script>
+
 export default {
-    emits: ['getUrl'],
+    emits: ['getUrl', 'selectImage'],
     name: 'ImageCarousel',
     props: {
         imagesList: Array,
     },
+    data() {
+        return {
+            selectedImages: [
+            ]
+        }
+    },
     methods: {
-        setImageUrl(url) {
-            this.$emit('getUrl', url)
+        selectImage(url, id) {
+            this.$emit('getUrl', url);
+            let index =  this.selectedImages.findIndex(el => el.id === id);
+            if (index >= 0) {
+                this.selectedImages.splice(index, 1)
+            } else (
+                this.selectedImages.push({id: id, url: url})
+            );
+            this.$emit('selectImage', this.selectedImages)
         }
     }
 }
